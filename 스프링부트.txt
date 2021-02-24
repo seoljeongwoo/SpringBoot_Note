@@ -1,4 +1,4 @@
-// 최종수정 : 2021-02-21 //
+// 최종수정 : 2021-02-24 //
 스프링 vs 스프링부트 : 재료 vs 완성품
 스프링부트 : Java의 생산성 향상
 COC : 설정보다는 관습 (남들과 동일하게 작성시 작성필요x)
@@ -67,3 +67,70 @@ Lombok 을 통한 가독성 높은 코드작성가능
 @Builder
 -> 파라미터 순서가 아닌 이름으로 값을 설정, 리팩토링에 유연하게 대응 및 필드순서가 변경되어도 상관 없음.
 -> 객체 생성이 명확해짐
+
+추가 Entity생성
+
+Java8 이전
+for문 or foreach 문을 통하여 하나씩 골라내어 가공
+Java8 이후
+Stream 을 이용하여 람다함수형식으로 깔끔하게 요소 처리가능'
+배열의 원소가공 : map , filter, sorted
+map : 요소들을 특정조건에 해당하는 값으로 변환
+filter : 요소들을 조건에 따라 걸러내는 작업
+sorted : 요소들을 정렬
+
+로깅 : 로그를 생성하도록 시스템을 작성하는 활동
+System.out.print() 를 사용하여 로깅을 할 경우 웹속도의 저하 , 출력되는 로그의 양이나 수준 조절 불가
+SLF4J 는 로깅관련 라이브러리를 하나의 통일된 방식으로 사용할수있는 방법 제공
+
+
+연관관계 매핑
+1) 방향 : 단방향 관계 : 두 Entity가 관계를 맺을 때, 한 쪽의 엔티티만 참조하고 있는 것을 의미
+	양방향 관계 : 두 Entity가 관계를 맺을 때, 양 쪽이 서로 참조하고 있는 것을 의미
+	실제로 양방향 인 것처럼 서로다른 두 단방향 연관관계를 묶어 놓아서 표현
+
+2) 다중성 : ManyToOne 다대일 (N : 1)		default : EAGER
+	  OneToMany 일대다 (1 : N)		default : LAZY
+	  OneToOne   일대일 (1 : 1)		default : EAGER
+	  ManyToMany 다대다 (N : N)	default : LAZY
+	  어떤 Entity를 중심으로 상대 Entity를 바라 보느냐에 따라 다중성이 다르다.
+
+Cascade : 영속성 전이 => EntityManager를 통해 영속성 객체에 수행하는 행동이 자식까지 전파
+FetchType : LAZY : 지연로딩 => 로딩되는 시점(객체가 사용되는 시점)에 프록시 객체로 가져온다
+	   SELECT 문 2번 수행
+	   EAGER : 즉시로딩 => 실제 조회시 한번의 SQL문으로 함께 조회 , 프록시 객체가 아닌 실제 객체로 가지고옴
+	   1개의 쿼리를 날렸는데 추가 쿼리가 N개가 수행되는 N+1 문제에 직면
+
+orphanRemoval : Entity가 삭제될때 참조가 끊어진 연관된 Entity도 삭제
+CascadeType.REMOVE : 연관 Entity가 삭제될때 같이 삭제하라는 영속성 전이
+
+Persistence Context : Entity를 영구적으로 저장하는 환경
+특징 : @Id 필드를 이용여 Entity 식별
+        쓰기지연기능 : 값을 변경하자마자 DB에 반영하지않고 SQL쿼리를 저장한후 commit()메서드를 호출시 DB에 반영(성능향상)
+        1차캐시, 동일성보장, 변경 감지, 지연 로딩
+        1차캐시에 정보가 있을시 Select를 수행하지 않고 정보제공, 없을경우 Select수행 및 1차캐시에 저장후 정보제공
+        변경감지 : 1차 캐시에 최초 저장시 그상태를 복사하여 저장(Snapshot) , 이후 DB와의 동기화시 Snapshot과 Entity비교후 변경을 감지
+Persistent Layer : JPA
+
+////////////////////////////// 수정필요
+JPQL
+Query Method 문법 및 활용
+@Embedded, @Embeddable
+@Valid, @Query ( nativeQuery )
+@Param
+
+Data.sql 사용
+테스트 정리 및 자동화
+
+primitive , refferd Integer
+GeneratedValue = stratge
+
+Presentation Layer  : Controller
+
+@GetMapping
+@PathVariable
+@RequestMapping
+
+@PostMapping
+@RequestBody
+@ResponseStatus
