@@ -1,4 +1,4 @@
-// 최종수정 : 2021-02-24 //
+// 최종수정 : 2021-02-27 //
 스프링 vs 스프링부트 : 재료 vs 완성품
 스프링부트 : Java의 생산성 향상
 COC : 설정보다는 관습 (남들과 동일하게 작성시 작성필요x)
@@ -68,6 +68,7 @@ Lombok 을 통한 가독성 높은 코드작성가능
 -> 파라미터 순서가 아닌 이름으로 값을 설정, 리팩토링에 유연하게 대응 및 필드순서가 변경되어도 상관 없음.
 -> 객체 생성이 명확해짐
 
+02/24
 추가 Entity생성
 
 Java8 이전
@@ -134,3 +135,26 @@ Presentation Layer  : Controller
 @PostMapping
 @RequestBody
 @ResponseStatus
+
+02/25
+
+@PutMapping	Person 수정
+@PatchMapping	Person 이름수정
+
+
+@DeleteMapping	Person 정보 삭제
+@Where : JPA
+@BeforeEach : 해당 메서드는 매테스트마다 먼저실행
+
+02/27
+코드 리팩토링
+Mokito 의존성 삽입 및 Test 작성
+
+@SpringBootTest -> @AutoWired 작동 X
+-> 사용안할시 Test 속도 증가 -> But 에러 발생 안하도록 탄탄한 코드 필요
+
+@ExtendWith(MockitoExtension.class)
+-> @InjectMocks => 테스트의 대상이 되는 class에 적용
+-> @Mock => 대상이되는 class에서 AutoWired 되고 있었던 class에 적용
+MockTest = 실제 객체를 이용하지 않고 가상의 객체를 이용한 Test => 실제 DB에 값이 없어도 테스트 가능
+	 => 가상 객체로 테스트 하기때문에 void 와 같은 Method 검증을 위해 verify 제공함
